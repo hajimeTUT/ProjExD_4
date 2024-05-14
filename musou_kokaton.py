@@ -243,6 +243,7 @@ class Score:
 
 def main():
     pg.display.set_caption("真！こうかとん無双")
+    pg.key.set_repeat(1,1)
     screen = pg.display.set_mode((WIDTH, HEIGHT))
     bg_img = pg.image.load(f"fig/pg_bg.jpg")
     score = Score()
@@ -257,9 +258,12 @@ def main():
     clock = pg.time.Clock()
     while True:
         key_lst = pg.key.get_pressed()
+        bird.speed = 10
         for event in pg.event.get():
             if event.type == pg.QUIT:
                 return 0
+            if event.type == pg.KEYDOWN and event.key == pg.K_LSHIFT:
+                bird.speed = 20
             if event.type == pg.KEYDOWN and event.key == pg.K_SPACE:
                 beams.add(Beam(bird))
         screen.blit(bg_img, [0, 0])
@@ -287,7 +291,6 @@ def main():
             pg.display.update()
             time.sleep(2)
             return
-
         bird.update(key_lst, screen)
         beams.update()
         beams.draw(screen)
