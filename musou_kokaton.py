@@ -70,7 +70,9 @@ class Bird(pg.sprite.Sprite):
         self.image = self.imgs[self.dire]
         self.rect = self.image.get_rect()
         self.rect.center = xy
-        self.speed = 10
+        self.default_speed = 10
+        self.fast_speed = 20
+        self.speed = self.default_speed
 
     def change_img(self, num: int, screen: pg.Surface):
         """
@@ -87,6 +89,12 @@ class Bird(pg.sprite.Sprite):
         引数1 key_lst：押下キーの真理値リスト
         引数2 screen：画面Surface
         """
+        # Shiftキーの状態をチェックして速度を設定
+        if key_lst[pg.K_LSHIFT]:
+            self.speed = self.fast_speed
+        else:
+            self.speed = self.default_speed
+
         sum_mv = [0, 0]
         for k, mv in __class__.delta.items():
             if key_lst[k]:
@@ -99,7 +107,6 @@ class Bird(pg.sprite.Sprite):
             self.dire = tuple(sum_mv)
             self.image = self.imgs[self.dire]
         screen.blit(self.image, self.rect)
-
 
 class Bomb(pg.sprite.Sprite):
     """
