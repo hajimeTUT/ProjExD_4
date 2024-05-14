@@ -166,6 +166,8 @@ class Beam(pg.sprite.Sprite):
         self.rect.centery = bird.rect.centery+bird.rect.height*self.vy
         self.rect.centerx = bird.rect.centerx+bird.rect.width*self.vx
         self.speed = 10
+        # 追加６ 変数
+        self.angle0 = 0
 
     def update(self):
         """
@@ -175,6 +177,15 @@ class Beam(pg.sprite.Sprite):
         self.rect.move_ip(self.speed*self.vx, self.speed*self.vy)
         if check_bound(self.rect) != (True, True):
             self.kill()
+
+
+class NeoBeam(pg.sprite.Sprite):
+    def __init__(self, bird: Bird, num: int):
+        self.bird = bird
+        self.angles = range(-50, +51, 100/(num-1))
+
+    def gen_beams(self):
+        beams = [Beam(self.bird, angle) for angle in self.angles]
 
 
 class Explosion(pg.sprite.Sprite):
